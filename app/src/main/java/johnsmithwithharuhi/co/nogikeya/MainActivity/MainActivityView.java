@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.Arrays;
-import java.util.List;
-
 import johnsmithwithharuhi.co.nogikeya.R;
 import johnsmithwithharuhi.co.nogikeya.databinding.ActivityMainBinding;
 
@@ -23,9 +20,10 @@ public class MainActivityView extends AppCompatActivity {
     }
 
     private void initTabView(TabLayout tabLayout) {
-        List<String> stringList = Arrays.asList("News", "Blog", "Info", "Ticket", "Set");
-        for (int i = 0; i < stringList.size(); i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(stringList.get(i)));
-        }
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
     }
 }
