@@ -20,10 +20,10 @@ public class MainActivityView extends AppCompatActivity {
     }
 
     private void initTabView(TabLayout tabLayout) {
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_person_outline_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_fiber_new_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_rss_feed_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_assignment_ind_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_event_24_b));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_favorite_border_24_b));
     }
 }
