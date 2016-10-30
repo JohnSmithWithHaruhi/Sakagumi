@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import johnsmithwithharuhi.co.nogikeya.News.NewsFragment;
+import johnsmithwithharuhi.co.nogikeya.News.NewsFragmentView;
 import johnsmithwithharuhi.co.nogikeya.R;
 import johnsmithwithharuhi.co.nogikeya.databinding.ActivityMainBinding;
 
@@ -27,7 +27,7 @@ public class MainActivityView extends AppCompatActivity {
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return new NewsFragment();
+                return NewsFragmentView.newInstance();
             }
 
             @Override
