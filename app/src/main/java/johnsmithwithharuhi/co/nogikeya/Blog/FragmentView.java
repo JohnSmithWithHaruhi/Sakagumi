@@ -34,13 +34,6 @@ public class FragmentView extends Fragment implements ViewModel.OnItemClickListe
 
   private ListAdapter mListAdapter;
 
-  public static FragmentView newInstance() {
-    Bundle args = new Bundle();
-    FragmentView fragment = new FragmentView();
-    fragment.setArguments(args);
-    return fragment;
-  }
-
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mJSoupHelper = new JSoupHelper();
@@ -60,6 +53,29 @@ public class FragmentView extends Fragment implements ViewModel.OnItemClickListe
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     recyclerView.setAdapter(mListAdapter);
+
+    loadBlogList();
+    return binding.getRoot();
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    mCompositeDisposable.dispose();
+  }
+
+  @Override public void onItemClick(String url) {
+    new CustomTabsIntent.Builder().setShowTitle(true)
+        .enableUrlBarHiding()
+        .addDefaultShareMenuItem()
+        .setStartAnimations(getContext(), android.R.anim.slide_in_left,
+            android.R.anim.slide_out_right)
+        .setExitAnimations(getContext(), android.R.anim.slide_in_left,
+            android.R.anim.slide_out_right)
+        .build()
+        .launchUrl(getContext(), Uri.parse(url));
+  }
+
+  private void loadBlogList() {
     mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
       @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
         e.onNext(mJSoupHelper.getViewModelList(Constant.K_URL + url));
@@ -78,21 +94,5 @@ public class FragmentView extends Fragment implements ViewModel.OnItemClickListe
             Log.d("TAG", "test: " + throwable.getMessage());
           }
         }));
-    return binding.getRoot();
-  }
-
-  @Override public void onDestroy() {
-    super.onDestroy();
-    mCompositeDisposable.dispose();
-  }
-
-  @Override public void onItemClick(String url) {
-    new CustomTabsIntent.Builder().setShowTitle(true).enableUrlBarHiding().addDefaultShareMenuItem()
-        .setStartAnimations(getContext(), android.R.anim.slide_in_left,
-            android.R.anim.slide_out_right)
-        .setExitAnimations(getContext(), android.R.anim.slide_in_left,
-            android.R.anim.slide_out_right)
-        .build()
-        .launchUrl(getContext(), Uri.parse(url));
   }
 }
