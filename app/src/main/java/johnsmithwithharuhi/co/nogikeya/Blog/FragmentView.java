@@ -30,7 +30,7 @@ import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogBinding;
 public class FragmentView extends Fragment
     implements ViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-  private String url = "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=50&cd=member";
+  private String url = "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=25&cd=member";
   private JSoupHelper mJSoupHelper;
   private CompositeDisposable mCompositeDisposable;
 
@@ -84,7 +84,7 @@ public class FragmentView extends Fragment
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<List<ViewModel>>() {
           @Override public void accept(List<ViewModel> viewModels) throws Exception {
-            mListAdapter.setKModelList(viewModels, FragmentView.this);
+            mListAdapter.setViewModelList(viewModels, FragmentView.this);
             mListAdapter.notifyDataSetChanged();
             if (mSwipeRefreshLayout.isRefreshing()) {
               mSwipeRefreshLayout.setRefreshing(false);

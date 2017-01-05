@@ -15,7 +15,7 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
   private List<ViewModel> mViewModelList = new ArrayList<>();
   private ViewModel.OnItemClickListener mListener;
 
-  void setKModelList(List<ViewModel> viewModelList, ViewModel.OnItemClickListener listener) {
+  void setViewModelList(List<ViewModel> viewModelList, ViewModel.OnItemClickListener listener) {
     mViewModelList = viewModelList;
     mListener = listener;
   }
