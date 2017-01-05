@@ -15,13 +15,13 @@ import johnsmithwithharuhi.co.nogikeya.databinding.ActivityMainBinding;
 
 public class MainActivityView extends AppCompatActivity {
 
-  private Fragment mCurrentFragment = new FragmentView();
+  private Fragment mCurrentFragment = null;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     ActivityMainBinding mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-    showFragment("Blog", mCurrentFragment);
+    showFragment("Blog", new FragmentView());
     BottomNavigationView bottomNavigationView = mBinding.mainBottomNavigation;
     bottomNavigationView.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -43,12 +43,14 @@ public class MainActivityView extends AppCompatActivity {
   }
 
   private void showFragment(String tag, Fragment newFragment) {
-    Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-    if (fragment != null) {
+    if (mCurrentFragment != null) {
       getSupportFragmentManager().beginTransaction()
           .detach(mCurrentFragment)
           .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
           .commit();
+    }
+    Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+    if (fragment != null) {
       getSupportFragmentManager().beginTransaction()
           .attach(fragment)
           .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
@@ -57,6 +59,7 @@ public class MainActivityView extends AppCompatActivity {
     } else {
       getSupportFragmentManager().beginTransaction()
           .add(R.id.main_content, newFragment, tag)
+          .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
           .commit();
       mCurrentFragment = newFragment;
     }
