@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import johnsmithwithharuhi.co.nogikeya.Blog.FragmentView;
@@ -25,9 +26,6 @@ public class MainActivityView extends AppCompatActivity {
     bottomNavigationView.setOnNavigationItemSelectedListener(
         new BottomNavigationView.OnNavigationItemSelectedListener() {
           @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            if (mCurrentFragment != null && mCurrentFragment.getTag().equals(item.getTitle())) {
-              return false;
-            }
             switch (item.getItemId()) {
               case R.id.action_blog:
                 showFragment(item.getTitle().toString(), new FragmentView());
@@ -44,17 +42,28 @@ public class MainActivityView extends AppCompatActivity {
         });
   }
 
+  //Make BackKey like HomeKey
+  @Override public void onBackPressed() {
+    moveTaskToBack(true);
+  }
+
   private void showFragment(String tag, Fragment newFragment) {
     Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
     if (fragment != null) {
-      getSupportFragmentManager().beginTransaction().hide(mCurrentFragment).commit();
-      getSupportFragmentManager().beginTransaction().show(fragment).commit();
+      getSupportFragmentManager().beginTransaction()
+          .detach(mCurrentFragment)
+          .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+          .commit();
+      getSupportFragmentManager().beginTransaction()
+          .attach(fragment)
+          .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+          .commit();
       mCurrentFragment = fragment;
     } else {
-      mCurrentFragment = newFragment;
       getSupportFragmentManager().beginTransaction()
           .add(R.id.main_content, newFragment, tag)
           .commit();
+      mCurrentFragment = newFragment;
     }
   }
 }

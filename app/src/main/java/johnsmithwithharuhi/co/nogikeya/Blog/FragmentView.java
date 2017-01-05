@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,12 +27,15 @@ import johnsmithwithharuhi.co.nogikeya.Constant;
 import johnsmithwithharuhi.co.nogikeya.R;
 import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogBinding;
 
-public class FragmentView extends Fragment implements ViewModel.OnItemClickListener {
+public class FragmentView extends Fragment
+    implements ViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-  private String url = "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=20&cd=member";
+  private String url = "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=50&cd=member";
   private JSoupHelper mJSoupHelper;
   private CompositeDisposable mCompositeDisposable;
 
+  private SwipeRefreshLayout mSwipeRefreshLayout;
+  private RecyclerView mRecyclerView;
   private ListAdapter mListAdapter;
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,13 +50,19 @@ public class FragmentView extends Fragment implements ViewModel.OnItemClickListe
       @Nullable Bundle savedInstanceState) {
     FragmentBlogBinding binding =
         DataBindingUtil.inflate(inflater, R.layout.fragment_blog, container, false);
-    RecyclerView recyclerView = binding.blogRecyclerView;
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setItemAnimator(new DefaultItemAnimator());
-    recyclerView.addItemDecoration(
+
+    mSwipeRefreshLayout = binding.blogSwipeRefreshLayout;
+    mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
+        android.R.color.holo_green_light);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
+
+    mRecyclerView = binding.blogRecyclerView;
+    mRecyclerView.setHasFixedSize(true);
+    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+    mRecyclerView.addItemDecoration(
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    recyclerView.setAdapter(mListAdapter);
+    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    mRecyclerView.setAdapter(mListAdapter);
 
     loadBlogList();
     return binding.getRoot();
@@ -61,18 +71,6 @@ public class FragmentView extends Fragment implements ViewModel.OnItemClickListe
   @Override public void onDestroy() {
     super.onDestroy();
     mCompositeDisposable.dispose();
-  }
-
-  @Override public void onItemClick(String url) {
-    new CustomTabsIntent.Builder().setShowTitle(true)
-        .enableUrlBarHiding()
-        .addDefaultShareMenuItem()
-        .setStartAnimations(getContext(), android.R.anim.slide_in_left,
-            android.R.anim.slide_out_right)
-        .setExitAnimations(getContext(), android.R.anim.slide_in_left,
-            android.R.anim.slide_out_right)
-        .build()
-        .launchUrl(getContext(), Uri.parse(url));
   }
 
   private void loadBlogList() {
@@ -88,11 +86,31 @@ public class FragmentView extends Fragment implements ViewModel.OnItemClickListe
           @Override public void accept(List<ViewModel> viewModels) throws Exception {
             mListAdapter.setKModelList(viewModels, FragmentView.this);
             mListAdapter.notifyDataSetChanged();
+            if (mSwipeRefreshLayout.isRefreshing()) {
+              mSwipeRefreshLayout.setRefreshing(false);
+            }
           }
         }, new Consumer<Throwable>() {
           @Override public void accept(Throwable throwable) throws Exception {
             Log.d("TAG", "test: " + throwable.getMessage());
           }
         }));
+  }
+
+  @Override public void onItemClick(String url) {
+    new CustomTabsIntent.Builder().setShowTitle(true)
+        .enableUrlBarHiding()
+        .addDefaultShareMenuItem()
+        .setStartAnimations(getContext(), android.R.anim.slide_in_left,
+            android.R.anim.slide_out_right)
+        .setExitAnimations(getContext(), android.R.anim.slide_in_left,
+            android.R.anim.slide_out_right)
+        .build()
+        .launchUrl(getContext(), Uri.parse(url));
+  }
+
+  @Override public void onRefresh() {
+    mCompositeDisposable.clear();
+    loadBlogList();
   }
 }
