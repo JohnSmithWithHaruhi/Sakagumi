@@ -53,7 +53,7 @@ public class FragmentView extends Fragment
 
     mSwipeRefreshLayout = binding.blogSwipeRefreshLayout;
     mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
-        android.R.color.holo_green_light);
+        R.color.colorLightGreen500);
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
     mRecyclerView = binding.blogRecyclerView;
