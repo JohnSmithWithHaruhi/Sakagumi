@@ -1,31 +1,28 @@
 package johnsmithwithharuhi.co.nogikeya.Blog;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import johnsmithwithharuhi.co.nogikeya.Blog.Model.KModel;
-
 class JSoupHelper {
 
-    List<KModel> getKModelList(String url) throws Exception {
-        Document document = Jsoup.connect(url).get();
-        Elements elements = document.getElementsByClass("box-newposts").first().getElementsByTag("li");
-        List<KModel> kModelList = new ArrayList<>();
-        for (Element element : elements) {
-            Element boxBlogElement = element.getElementsByClass(("box-blog")).first();
-            KModel kModel = new KModel();
-            kModel.time.set(boxBlogElement.select("time").text());
-            kModel.name.set(boxBlogElement.select("p").not(".ttl").first().text());
-            kModel.title.set(boxBlogElement.getElementsByClass("ttl").text());
-            kModel.content.set(boxBlogElement.getElementsByClass("text").text());
-            kModel.url.set(element.getElementsByTag("a").first().attr("href"));
-            kModelList.add(kModel);
-        }
-        return kModelList;
+  List<ViewModel> getViewModelList(String url) throws Exception {
+    Document document = Jsoup.connect(url).get();
+    Elements elements = document.getElementsByClass("box-newposts").first().getElementsByTag("li");
+    List<ViewModel> viewModelList = new ArrayList<>();
+    for (Element element : elements) {
+      Element boxBlogElement = element.getElementsByClass(("box-blog")).first();
+      ViewModel viewModel = new ViewModel();
+      viewModel.time.set(boxBlogElement.select("time").text());
+      viewModel.name.set(boxBlogElement.select("p").not(".ttl").first().text());
+      viewModel.title.set(boxBlogElement.getElementsByClass("ttl").text());
+      viewModel.content.set(boxBlogElement.getElementsByClass("text").text());
+      viewModel.url.set(element.getElementsByTag("a").first().attr("href"));
+      viewModelList.add(viewModel);
     }
+    return viewModelList;
+  }
 }

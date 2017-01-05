@@ -13,19 +13,23 @@
       tools:context="johnsmithwithharuhi.co.nogikeya.MainActivity.MainActivityView"
       >
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/main_tabLayout"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/main_bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        app:tabIndicatorHeight="3dp"
+        android:background="@android:color/black"
+        app:itemBackground="@android:color/white"
+        app:itemIconTint="@drawable/selector_bottom_navigation"
+        app:itemTextColor="@drawable/selector_bottom_navigation"
+        app:menu="@menu/menu_bottom_navigation"
         />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/main_view_pager"
+    <FrameLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/main_tabLayout"
+        android:layout_above="@+id/main_bottom_navigation"
         />
 
   </RelativeLayout>
