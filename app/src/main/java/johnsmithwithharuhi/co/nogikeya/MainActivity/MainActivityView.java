@@ -42,11 +42,6 @@ public class MainActivityView extends AppCompatActivity {
         });
   }
 
-  //Make BackKey like HomeKey
-  @Override public void onBackPressed() {
-    moveTaskToBack(true);
-  }
-
   private void showFragment(String tag, Fragment newFragment) {
     Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
     if (fragment != null) {

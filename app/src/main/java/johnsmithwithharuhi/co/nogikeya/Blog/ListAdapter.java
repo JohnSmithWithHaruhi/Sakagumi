@@ -15,9 +15,27 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
   private List<ViewModel> mViewModelList = new ArrayList<>();
   private ViewModel.OnItemClickListener mListener;
 
-  void setViewModelList(List<ViewModel> viewModelList, ViewModel.OnItemClickListener listener) {
-    mViewModelList = viewModelList;
+  ListAdapter(ViewModel.OnItemClickListener listener) {
     mListener = listener;
+  }
+
+  void putViewModelList(List<ViewModel> viewModelList) {
+    if (!mViewModelList.isEmpty()) {
+      String firstUrl = mViewModelList.get(0).url.get();
+      List<ViewModel> tempViewModelList = new ArrayList<>();
+      for (ViewModel viewModel : viewModelList) {
+        if (firstUrl.equals(viewModel.url.get())) {
+          break;
+        } else {
+          tempViewModelList.add(viewModel);
+        }
+      }
+      mViewModelList.addAll(tempViewModelList);
+      notifyItemRangeInserted(0, tempViewModelList.size());
+    } else {
+      mViewModelList.addAll(viewModelList);
+      notifyDataSetChanged();
+    }
   }
 
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -42,7 +42,7 @@ public class FragmentView extends Fragment
     super.onCreate(savedInstanceState);
     mJSoupHelper = new JSoupHelper();
     mCompositeDisposable = new CompositeDisposable();
-    mListAdapter = new ListAdapter();
+    mListAdapter = new ListAdapter(this);
   }
 
   @Nullable @Override
@@ -84,15 +84,17 @@ public class FragmentView extends Fragment
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<List<ViewModel>>() {
           @Override public void accept(List<ViewModel> viewModels) throws Exception {
-            mListAdapter.setViewModelList(viewModels, FragmentView.this);
-            mListAdapter.notifyDataSetChanged();
+            mListAdapter.putViewModelList(viewModels);
             if (mSwipeRefreshLayout.isRefreshing()) {
               mSwipeRefreshLayout.setRefreshing(false);
             }
           }
         }, new Consumer<Throwable>() {
           @Override public void accept(Throwable throwable) throws Exception {
-            Log.d("TAG", "test: " + throwable.getMessage());
+            Log.d("TAG", "Throwable: " + throwable.getMessage());
+            if (mSwipeRefreshLayout.isRefreshing()) {
+              mSwipeRefreshLayout.setRefreshing(false);
+            }
           }
         }));
   }
