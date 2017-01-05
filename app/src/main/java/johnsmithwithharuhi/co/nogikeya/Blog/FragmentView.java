@@ -87,7 +87,7 @@ public class FragmentView extends Fragment implements ViewModel.OnItemClickListe
   }
 
   @Override public void onItemClick(String url) {
-    new CustomTabsIntent.Builder().enableUrlBarHiding()
+    new CustomTabsIntent.Builder().setShowTitle(true).enableUrlBarHiding().addDefaultShareMenuItem()
         .setStartAnimations(getContext(), android.R.anim.slide_in_left,
             android.R.anim.slide_out_right)
         .setExitAnimations(getContext(), android.R.anim.slide_in_left,
