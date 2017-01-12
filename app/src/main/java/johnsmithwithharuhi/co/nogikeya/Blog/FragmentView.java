@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +29,8 @@ import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogBinding;
 public class FragmentView extends Fragment
     implements ViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
+  private static final String MEMBER_ID_KEY = "memberIdKey";
+
   private String url = "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=25&cd=member";
   private JSoupHelper mJSoupHelper;
   private CompositeDisposable mCompositeDisposable;
@@ -37,6 +38,14 @@ public class FragmentView extends Fragment
   private SwipeRefreshLayout mSwipeRefreshLayout;
   private RecyclerView mRecyclerView;
   private ListAdapter mListAdapter;
+
+  public static FragmentView newInstance(int memberId) {
+    Bundle args = new Bundle();
+    args.putInt(MEMBER_ID_KEY, memberId);
+    FragmentView fragment = new FragmentView();
+    fragment.setArguments(args);
+    return fragment;
+  }
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -58,7 +67,6 @@ public class FragmentView extends Fragment
 
     mRecyclerView = binding.blogRecyclerView;
     mRecyclerView.setHasFixedSize(true);
-    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     mRecyclerView.addItemDecoration(
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -69,11 +77,14 @@ public class FragmentView extends Fragment
   }
 
   @Override public void onDestroy() {
+    mCompositeDisposable.clear();
     super.onDestroy();
-    mCompositeDisposable.dispose();
   }
 
   private void loadBlogList() {
+    if (getArguments() != null) {
+      url = url + "&ct=" + getArguments().getInt(MEMBER_ID_KEY);
+    }
     mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
       @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
         e.onNext(mJSoupHelper.getViewModelList(Constant.K_URL + url));

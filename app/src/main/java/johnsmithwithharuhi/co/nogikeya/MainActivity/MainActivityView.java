@@ -31,6 +31,8 @@ public class MainActivityView extends AppCompatActivity {
                 showFragment(item.getTitle().toString(), new FragmentView());
                 break;
               case R.id.action_rss:
+                showFragment(item.getTitle().toString(), FragmentView.newInstance(11));
+                break;
               case R.id.action_event:
               case R.id.action_member:
               case R.id.action_favorite:

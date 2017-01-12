@@ -1,5 +1,6 @@
 package johnsmithwithharuhi.co.nogikeya.Blog;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;
@@ -9,7 +10,7 @@ import org.jsoup.select.Elements;
 
 class JSoupHelper {
 
-  List<ViewModel> getViewModelList(String url) throws Exception {
+  List<ViewModel> getViewModelList(String url) throws IOException {
     Document document = Jsoup.connect(url).get();
     Elements elements = document.getElementsByClass("box-newposts").first().getElementsByTag("li");
     List<ViewModel> viewModelList = new ArrayList<>();
