@@ -77,17 +77,17 @@ public class FragmentView extends Fragment
   }
 
   @Override public void onDestroy() {
-    mCompositeDisposable.clear();
+    if (mCompositeDisposable.isDisposed()) {
+      mCompositeDisposable.clear();
+    }
     super.onDestroy();
   }
 
   private void loadBlogList() {
-    if (getArguments() != null) {
-      url = url + "&ct=" + getArguments().getInt(MEMBER_ID_KEY);
-    }
     mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
       @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
-        e.onNext(mJSoupHelper.getViewModelList(Constant.K_URL + url));
+        e.onNext(mJSoupHelper.getViewModelList(getArguments() == null ? Constant.K_URL + url
+            : Constant.K_URL + url + "&ct=" + getArguments().getInt(MEMBER_ID_KEY)));
         e.onComplete();
       }
     })
@@ -123,7 +123,9 @@ public class FragmentView extends Fragment
   }
 
   @Override public void onRefresh() {
-    mCompositeDisposable.clear();
+    if (mCompositeDisposable.isDisposed()) {
+      mCompositeDisposable.clear();
+    }
     loadBlogList();
   }
 }
