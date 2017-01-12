@@ -12,15 +12,15 @@ class JSoupHelper {
 
   List<ViewModel> getViewModelList(String url) throws IOException {
     Document document = Jsoup.connect(url).get();
-    Elements elements = document.getElementsByClass("box-newposts").first().getElementsByTag("li");
+    Elements elements = document.getElementsByTag("article");
     List<ViewModel> viewModelList = new ArrayList<>();
     for (Element element : elements) {
-      Element boxBlogElement = element.getElementsByClass(("box-blog")).first();
       ViewModel viewModel = new ViewModel();
-      viewModel.time.set(boxBlogElement.select("time").text());
-      viewModel.name.set(boxBlogElement.select("p").not(".ttl").first().text());
-      viewModel.title.set(boxBlogElement.getElementsByClass("ttl").text());
-      viewModel.content.set(boxBlogElement.getElementsByClass("text").text());
+      viewModel.time.set(
+          element.getElementsByClass(("box-bottom")).first().getElementsByTag("li").first().text());
+      viewModel.name.set(element.getElementsByClass("name").text());
+      viewModel.title.set(element.getElementsByTag("a").first().text());
+      viewModel.content.set(element.getElementsByClass("box-article").text());
       viewModel.url.set(element.getElementsByTag("a").first().attr("href"));
       viewModelList.add(viewModel);
     }
