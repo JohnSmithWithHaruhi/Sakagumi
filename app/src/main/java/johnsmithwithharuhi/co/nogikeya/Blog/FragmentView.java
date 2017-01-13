@@ -23,7 +23,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import java.util.List;
-import johnsmithwithharuhi.co.nogikeya.Constant;
 import johnsmithwithharuhi.co.nogikeya.R;
 import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogBinding;
 
@@ -32,10 +31,6 @@ public class FragmentView extends Fragment
 
   private static final String BLOG_TYPE_KEY = "blog_type_key";
 
-  private static final String mKUrl =
-      "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=25&cd=member";
-  private static final String mNUrl = "/?p=1";
-
   private JSoupHelper mJSoupHelper;
   private CompositeDisposable mCompositeDisposable;
   private ListAdapter mListAdapter;
@@ -43,7 +38,7 @@ public class FragmentView extends Fragment
   private SwipeRefreshLayout mSwipeRefreshLayout;
   private RecyclerView mRecyclerView;
 
-  private int mType = 0;
+  private int mType = -1;
 
   public static FragmentView newInstance(int blogId) {
     Bundle args = new Bundle();
@@ -79,18 +74,7 @@ public class FragmentView extends Fragment
     mRecyclerView.setAdapter(mListAdapter);
     mType = getArguments().getInt(BLOG_TYPE_KEY);
 
-    switch (mType) {
-      case 0:
-        loadBlogList();
-        break;
-      case 1:
-        loadNBlogList();
-        break;
-      case 2:
-        loadKBlogList();
-        break;
-    }
-
+    loadBlogList();
     return binding.getRoot();
   }
 
@@ -104,59 +88,7 @@ public class FragmentView extends Fragment
   private void loadBlogList() {
     mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
       @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
-        e.onNext(mJSoupHelper.getKViewModelList(Constant.K_URL + mKUrl + "&ct=11"));
-        e.onComplete();
-      }
-    })
-        .subscribeOn(Schedulers.newThread())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<List<ViewModel>>() {
-          @Override public void accept(List<ViewModel> viewModels) throws Exception {
-            mListAdapter.putViewModelList(viewModels);
-            if (mSwipeRefreshLayout.isRefreshing()) {
-              mSwipeRefreshLayout.setRefreshing(false);
-            }
-          }
-        }, new Consumer<Throwable>() {
-          @Override public void accept(Throwable throwable) throws Exception {
-            Log.d("TAG", "Throwable: " + throwable.getMessage());
-            if (mSwipeRefreshLayout.isRefreshing()) {
-              mSwipeRefreshLayout.setRefreshing(false);
-            }
-          }
-        }));
-  }
-
-  private void loadKBlogList() {
-    mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
-      @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
-        e.onNext(mJSoupHelper.getKViewModelList(Constant.K_URL + mKUrl));
-        e.onComplete();
-      }
-    })
-        .subscribeOn(Schedulers.newThread())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<List<ViewModel>>() {
-          @Override public void accept(List<ViewModel> viewModels) throws Exception {
-            mListAdapter.putViewModelList(viewModels);
-            if (mSwipeRefreshLayout.isRefreshing()) {
-              mSwipeRefreshLayout.setRefreshing(false);
-            }
-          }
-        }, new Consumer<Throwable>() {
-          @Override public void accept(Throwable throwable) throws Exception {
-            Log.d("TAG", "Throwable: " + throwable.getMessage());
-            if (mSwipeRefreshLayout.isRefreshing()) {
-              mSwipeRefreshLayout.setRefreshing(false);
-            }
-          }
-        }));
-  }
-
-  private void loadNBlogList() {
-    mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
-      @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
-        e.onNext(mJSoupHelper.getNViewModelList(Constant.N_URL + mNUrl));
+        e.onNext(mJSoupHelper.getViewModelList(mType));
         e.onComplete();
       }
     })
@@ -196,16 +128,6 @@ public class FragmentView extends Fragment
     if (mCompositeDisposable.isDisposed()) {
       mCompositeDisposable.clear();
     }
-    switch (mType) {
-      case 0:
-        loadBlogList();
-        break;
-      case 1:
-        loadNBlogList();
-        break;
-      case 2:
-        loadKBlogList();
-        break;
-    }
+    loadBlogList();
   }
 }

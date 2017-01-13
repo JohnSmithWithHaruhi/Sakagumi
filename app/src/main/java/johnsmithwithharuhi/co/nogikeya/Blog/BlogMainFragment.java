@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import johnsmithwithharuhi.co.nogikeya.News.NewsFragmentView;
 import johnsmithwithharuhi.co.nogikeya.R;
 import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogMainBinding;
 
@@ -41,14 +40,7 @@ public class BlogMainFragment extends Fragment {
       }
 
       @Override public Fragment getItem(int position) {
-        switch (position) {
-          case 0:
-          case 1:
-          case 2:
-            return FragmentView.newInstance(position);
-          default:
-            return new NewsFragmentView();
-        }
+        return FragmentView.newInstance(position);
       }
 
       @Override public int getCount() {
