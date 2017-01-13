@@ -31,7 +31,7 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
       }
       if (!tempViewModelList.isEmpty()) {
-        mViewModelList.addAll(tempViewModelList);
+        mViewModelList.addAll(0, tempViewModelList);
         notifyItemRangeInserted(0, tempViewModelList.size());
       }
     } else {

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,19 +30,24 @@ import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogBinding;
 public class FragmentView extends Fragment
     implements ViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-  private static final String MEMBER_ID_KEY = "memberIdKey";
+  private static final String BLOG_TYPE_KEY = "blog_type_key";
 
-  private String url = "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=25&cd=member";
+  private static final String mKUrl =
+      "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=25&cd=member";
+  private static final String mNUrl = "/?p=1";
+
   private JSoupHelper mJSoupHelper;
   private CompositeDisposable mCompositeDisposable;
+  private ListAdapter mListAdapter;
 
   private SwipeRefreshLayout mSwipeRefreshLayout;
   private RecyclerView mRecyclerView;
-  private ListAdapter mListAdapter;
 
-  public static FragmentView newInstance(int memberId) {
+  private int mType = 0;
+
+  public static FragmentView newInstance(int blogId) {
     Bundle args = new Bundle();
-    args.putInt(MEMBER_ID_KEY, memberId);
+    args.putInt(BLOG_TYPE_KEY, blogId);
     FragmentView fragment = new FragmentView();
     fragment.setArguments(args);
     return fragment;
@@ -71,8 +77,20 @@ public class FragmentView extends Fragment
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     mRecyclerView.setAdapter(mListAdapter);
+    mType = getArguments().getInt(BLOG_TYPE_KEY);
 
-    loadBlogList();
+    switch (mType) {
+      case 0:
+        loadBlogList();
+        break;
+      case 1:
+        loadNBlogList();
+        break;
+      case 2:
+        loadKBlogList();
+        break;
+    }
+
     return binding.getRoot();
   }
 
@@ -86,8 +104,59 @@ public class FragmentView extends Fragment
   private void loadBlogList() {
     mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
       @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
-        e.onNext(mJSoupHelper.getViewModelList(getArguments() == null ? Constant.K_URL + url
-            : Constant.K_URL + url + "&ct=" + getArguments().getInt(MEMBER_ID_KEY)));
+        e.onNext(mJSoupHelper.getKViewModelList(Constant.K_URL + mKUrl + "&ct=11"));
+        e.onComplete();
+      }
+    })
+        .subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<List<ViewModel>>() {
+          @Override public void accept(List<ViewModel> viewModels) throws Exception {
+            mListAdapter.putViewModelList(viewModels);
+            if (mSwipeRefreshLayout.isRefreshing()) {
+              mSwipeRefreshLayout.setRefreshing(false);
+            }
+          }
+        }, new Consumer<Throwable>() {
+          @Override public void accept(Throwable throwable) throws Exception {
+            Log.d("TAG", "Throwable: " + throwable.getMessage());
+            if (mSwipeRefreshLayout.isRefreshing()) {
+              mSwipeRefreshLayout.setRefreshing(false);
+            }
+          }
+        }));
+  }
+
+  private void loadKBlogList() {
+    mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
+      @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
+        e.onNext(mJSoupHelper.getKViewModelList(Constant.K_URL + mKUrl));
+        e.onComplete();
+      }
+    })
+        .subscribeOn(Schedulers.newThread())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Consumer<List<ViewModel>>() {
+          @Override public void accept(List<ViewModel> viewModels) throws Exception {
+            mListAdapter.putViewModelList(viewModels);
+            if (mSwipeRefreshLayout.isRefreshing()) {
+              mSwipeRefreshLayout.setRefreshing(false);
+            }
+          }
+        }, new Consumer<Throwable>() {
+          @Override public void accept(Throwable throwable) throws Exception {
+            Log.d("TAG", "Throwable: " + throwable.getMessage());
+            if (mSwipeRefreshLayout.isRefreshing()) {
+              mSwipeRefreshLayout.setRefreshing(false);
+            }
+          }
+        }));
+  }
+
+  private void loadNBlogList() {
+    mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
+      @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
+        e.onNext(mJSoupHelper.getNViewModelList(Constant.N_URL + mNUrl));
         e.onComplete();
       }
     })
@@ -112,6 +181,7 @@ public class FragmentView extends Fragment
 
   @Override public void onItemClick(String url) {
     new CustomTabsIntent.Builder().setShowTitle(true)
+        .setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorLightGreen700))
         .enableUrlBarHiding()
         .addDefaultShareMenuItem()
         .setStartAnimations(getContext(), android.R.anim.slide_in_left,
@@ -126,6 +196,16 @@ public class FragmentView extends Fragment
     if (mCompositeDisposable.isDisposed()) {
       mCompositeDisposable.clear();
     }
-    loadBlogList();
+    switch (mType) {
+      case 0:
+        loadBlogList();
+        break;
+      case 1:
+        loadNBlogList();
+        break;
+      case 2:
+        loadKBlogList();
+        break;
+    }
   }
 }

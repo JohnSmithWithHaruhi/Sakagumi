@@ -2,7 +2,6 @@ package johnsmithwithharuhi.co.nogikeya.Blog;
 
 import android.databinding.ObservableField;
 import android.view.View;
-import johnsmithwithharuhi.co.nogikeya.Constant;
 
 public class ViewModel {
   public ObservableField<String> title = new ObservableField<>();
@@ -17,7 +16,7 @@ public class ViewModel {
   }
 
   public void onItemClick(View view) {
-    mListener.onItemClick(Constant.K_URL + url.get());
+    mListener.onItemClick(url.get());
   }
 
   public interface OnItemClickListener {
