@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya.Blog;
+package johnsmithwithharuhi.co.sakagumi.Blog;
 
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -23,8 +23,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import java.util.List;
-import johnsmithwithharuhi.co.nogikeya.R;
-import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogBinding;
+import johnsmithwithharuhi.co.sakagumi.R;
+import johnsmithwithharuhi.co.sakagumi.databinding.FragmentBlogBinding;
 
 public class FragmentView extends Fragment
     implements ViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {

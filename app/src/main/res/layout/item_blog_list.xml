@@ -5,7 +5,7 @@
 
     <variable
         name="viewModel"
-        type="johnsmithwithharuhi.co.nogikeya.Blog.ViewModel"
+        type="johnsmithwithharuhi.co.sakagumi.Blog.ViewModel"
         />
   </data>
 

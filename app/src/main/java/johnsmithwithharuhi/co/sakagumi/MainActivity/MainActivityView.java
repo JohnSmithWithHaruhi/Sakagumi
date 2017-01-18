@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya.MainActivity;
+package johnsmithwithharuhi.co.sakagumi.MainActivity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import johnsmithwithharuhi.co.nogikeya.Blog.BlogMainFragment;
-import johnsmithwithharuhi.co.nogikeya.R;
-import johnsmithwithharuhi.co.nogikeya.databinding.ActivityMainBinding;
+import johnsmithwithharuhi.co.sakagumi.Blog.BlogMainFragment;
+import johnsmithwithharuhi.co.sakagumi.R;
+import johnsmithwithharuhi.co.sakagumi.databinding.ActivityMainBinding;
 
 public class MainActivityView extends AppCompatActivity {
 

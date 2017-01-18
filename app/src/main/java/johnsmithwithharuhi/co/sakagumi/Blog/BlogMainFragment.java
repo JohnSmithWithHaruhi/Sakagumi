@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya.Blog;
+package johnsmithwithharuhi.co.sakagumi.Blog;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import johnsmithwithharuhi.co.nogikeya.R;
-import johnsmithwithharuhi.co.nogikeya.databinding.FragmentBlogMainBinding;
+import johnsmithwithharuhi.co.sakagumi.R;
+import johnsmithwithharuhi.co.sakagumi.databinding.FragmentBlogMainBinding;
 
 public class BlogMainFragment extends Fragment {
 

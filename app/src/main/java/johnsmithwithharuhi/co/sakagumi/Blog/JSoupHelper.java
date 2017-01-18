@@ -1,9 +1,9 @@
-package johnsmithwithharuhi.co.nogikeya.Blog;
+package johnsmithwithharuhi.co.sakagumi.Blog;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import johnsmithwithharuhi.co.nogikeya.Constant;
+import johnsmithwithharuhi.co.sakagumi.Constant;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

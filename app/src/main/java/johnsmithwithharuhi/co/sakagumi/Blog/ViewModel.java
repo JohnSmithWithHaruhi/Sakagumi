@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya.Blog;
+package johnsmithwithharuhi.co.sakagumi.Blog;
 
 import android.databinding.ObservableField;
 import android.view.View;

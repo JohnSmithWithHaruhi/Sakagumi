@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya.News;
+package johnsmithwithharuhi.co.sakagumi.News;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;

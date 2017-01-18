@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya;
+package johnsmithwithharuhi.co.sakagumi;
 
 import org.junit.Test;
 
