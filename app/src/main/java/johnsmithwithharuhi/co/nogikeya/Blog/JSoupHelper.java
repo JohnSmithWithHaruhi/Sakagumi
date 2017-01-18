@@ -30,8 +30,7 @@ class JSoupHelper {
 
   private List<ViewModel> getOsuViewModelList() throws IOException {
     Document document = Jsoup.connect(
-        Constant.K_URL + "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=25&cd=member&ct=11")
-        .get();
+        Constant.K_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member&ct=11").get();
     Elements elements = document.getElementsByTag("article");
     List<ViewModel> viewModelList = new ArrayList<>();
     for (Element element : elements) {
@@ -48,8 +47,9 @@ class JSoupHelper {
   }
 
   private List<ViewModel> getKeyViewModelList() throws IOException {
-    Document document = Jsoup.connect(
-        Constant.K_URL + "/mob/news/diarKiji.php?site=k46o&ima=0000&page=0&rw=25&cd=member").get();
+    Document document =
+        Jsoup.connect(Constant.K_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member")
+            .get();
     Elements elements = document.getElementsByTag("article");
     List<ViewModel> viewModelList = new ArrayList<>();
     for (Element element : elements) {
