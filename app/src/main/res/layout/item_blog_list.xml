@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <data>
+
+    <variable
+        name="viewModel"
+        type="johnsmithwithharuhi.co.nogikeya.Blog.ViewModel"
+        />
+  </data>
+
+  <RelativeLayout
+      android:id="@+id/relative_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:foreground="?android:attr/selectableItemBackground"
+      android:minHeight="@dimen/list_item_tile_height"
+      android:onClick="@{viewModel::onItemClick}"
+      android:paddingBottom="@dimen/list_item_padding_bottom"
+      android:paddingEnd="@dimen/list_item_padding_right"
+      android:paddingStart="@dimen/list_item_padding_left"
+      android:paddingTop="@dimen/list_item_padding_top"
+      >
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{viewModel.name}"
+        android:textColor="@color/colorLightGreen700"
+        android:textSize="@dimen/primary_text"
+        />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="@{viewModel.time}"
+        android:textColor="@color/colorGrey700"
+        android:textSize="@dimen/secondary_text"
+        />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@{viewModel.title}"
+        android:textColor="@color/colorGrey700"
+        android:textSize="@dimen/secondary_text"
+        />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@{viewModel.content}"
+        android:textColor="@color/colorGrey700"
+        android:textSize="@dimen/secondary_text"
+        />
+
+  </RelativeLayout>
+
+</layout>
