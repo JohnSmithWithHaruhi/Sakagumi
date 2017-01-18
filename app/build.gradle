@@ -4,8 +4,8 @@ android {
   compileSdkVersion 25
   buildToolsVersion "24.0.2"
   defaultConfig {
-    applicationId "johnsmithwithharuhi.co.nogikeya"
-    minSdkVersion 19
+    applicationId 'johnsmithwithharuhi.co.sakagumi'
+    minSdkVersion 21
     targetSdkVersion 25
     versionCode 1
     versionName "1.0"
@@ -20,6 +20,7 @@ android {
   dataBinding {
     enabled = true
   }
+  productFlavors {}
 }
 
 dependencies {

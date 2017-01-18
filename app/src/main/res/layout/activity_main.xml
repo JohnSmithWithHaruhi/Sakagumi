@@ -10,7 +10,7 @@
       android:id="@+id/activity_main"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      tools:context="johnsmithwithharuhi.co.nogikeya.MainActivity.MainActivityView"
+      tools:context="johnsmithwithharuhi.co.sakagumi.MainActivity.MainActivityView"
       >
 
     <android.support.design.widget.BottomNavigationView

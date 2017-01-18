@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya.News;
+package johnsmithwithharuhi.co.sakagumi.News;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import johnsmithwithharuhi.co.nogikeya.R;
-import johnsmithwithharuhi.co.nogikeya.databinding.FragmentNewsBinding;
+import johnsmithwithharuhi.co.sakagumi.R;
+import johnsmithwithharuhi.co.sakagumi.databinding.FragmentNewsBinding;
 
 public class NewsFragmentView extends Fragment {
 

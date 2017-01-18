@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.nogikeya.Blog;
+package johnsmithwithharuhi.co.sakagumi.Blog;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
-import johnsmithwithharuhi.co.nogikeya.R;
-import johnsmithwithharuhi.co.nogikeya.databinding.ItemBlogListBinding;
+import johnsmithwithharuhi.co.sakagumi.R;
+import johnsmithwithharuhi.co.sakagumi.databinding.ItemBlogListBinding;
 
 class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
