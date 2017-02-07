@@ -74,6 +74,7 @@ public class FragmentView extends Fragment
     mRecyclerView.setAdapter(mListAdapter);
     mType = getArguments().getInt(BLOG_TYPE_KEY);
 
+    mSwipeRefreshLayout.setRefreshing(true);
     loadBlogList();
     return binding.getRoot();
   }
