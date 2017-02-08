@@ -36,9 +36,9 @@ public class FragmentView extends Fragment
   private ListAdapter mListAdapter;
 
   private SwipeRefreshLayout mSwipeRefreshLayout;
-  private RecyclerView mRecyclerView;
 
   private int mType = -1;
+  private int mColorId = 0;
 
   public static FragmentView newInstance(int blogId) {
     Bundle args = new Bundle();
@@ -66,23 +66,34 @@ public class FragmentView extends Fragment
         R.color.colorLightGreen500);
     mSwipeRefreshLayout.setOnRefreshListener(this);
 
-    mRecyclerView = binding.blogRecyclerView;
-    mRecyclerView.setHasFixedSize(true);
-    mRecyclerView.addItemDecoration(
+    RecyclerView recyclerView = binding.blogRecyclerView;
+    recyclerView.setHasFixedSize(true);
+    recyclerView.addItemDecoration(
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-    mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    mRecyclerView.setAdapter(mListAdapter);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setAdapter(mListAdapter);
     mType = getArguments().getInt(BLOG_TYPE_KEY);
+    switch (mType) {
+      case 0:
+        mColorId = R.color.colorGrey700;
+        break;
+      case 1:
+        mColorId = R.color.colorPurple700;
+        break;
+      case 2:
+        mColorId = R.color.colorLightGreen700;
+        break;
+    }
 
-    mSwipeRefreshLayout.setRefreshing(true);
-    loadBlogList();
+    if (mListAdapter.getItemCount() == 0) {
+      mSwipeRefreshLayout.setRefreshing(true);
+      loadBlogList();
+    }
     return binding.getRoot();
   }
 
   @Override public void onDestroy() {
-    if (mCompositeDisposable.isDisposed()) {
-      mCompositeDisposable.clear();
-    }
+    mCompositeDisposable.clear();
     super.onDestroy();
   }
 
@@ -92,8 +103,7 @@ public class FragmentView extends Fragment
         e.onNext(mJSoupHelper.getViewModelList(mType));
         e.onComplete();
       }
-    })
-        .subscribeOn(Schedulers.newThread())
+    }).subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new Consumer<List<ViewModel>>() {
           @Override public void accept(List<ViewModel> viewModels) throws Exception {
@@ -114,7 +124,7 @@ public class FragmentView extends Fragment
 
   @Override public void onItemClick(String url) {
     new CustomTabsIntent.Builder().setShowTitle(true)
-        .setToolbarColor(ContextCompat.getColor(getContext(), R.color.colorLightGreen700))
+        .setToolbarColor(ContextCompat.getColor(getContext(), mColorId))
         .enableUrlBarHiding()
         .addDefaultShareMenuItem()
         .setStartAnimations(getContext(), android.R.anim.slide_in_left,
@@ -126,9 +136,7 @@ public class FragmentView extends Fragment
   }
 
   @Override public void onRefresh() {
-    if (mCompositeDisposable.isDisposed()) {
-      mCompositeDisposable.clear();
-    }
+    mCompositeDisposable.clear();
     loadBlogList();
   }
 }
