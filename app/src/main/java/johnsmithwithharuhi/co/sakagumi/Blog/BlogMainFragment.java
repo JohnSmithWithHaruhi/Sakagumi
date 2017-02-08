@@ -49,7 +49,6 @@ public class BlogMainFragment extends Fragment {
     };
 
     viewPager.setAdapter(fragmentPagerAdapter);
-    viewPager.setOffscreenPageLimit(2);
     tabLayout.setupWithViewPager(viewPager);
     tabLayout.setSelectedTabIndicatorHeight(3);
 
