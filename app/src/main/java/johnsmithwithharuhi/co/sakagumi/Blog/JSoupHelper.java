@@ -15,7 +15,7 @@ class JSoupHelper {
   private static final int NOG_KEY = 1;
   private static final int KEY_KEY = 2;
 
-  public List<ViewModel> getViewModelList(int type) throws IOException {
+  List<ViewModel> getViewModelList(int type) throws IOException {
     switch (type) {
       case OSU_KEY:
         return getOsuViewModelList();
@@ -30,7 +30,7 @@ class JSoupHelper {
 
   private List<ViewModel> getOsuViewModelList() throws IOException {
     Document document = Jsoup.connect(
-        Constant.KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member&ct=11").get();
+        Constant.KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=30&cd=member&ct=11").get();
     Elements elements = document.getElementsByTag("article");
     List<ViewModel> viewModelList = new ArrayList<>();
     for (Element element : elements) {
@@ -49,7 +49,7 @@ class JSoupHelper {
 
   private List<ViewModel> getKeyViewModelList() throws IOException {
     Document document = Jsoup.connect(
-        Constant.KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member").get();
+        Constant.KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=30&cd=member").get();
     Elements elements = document.getElementsByTag("article");
     List<ViewModel> viewModelList = new ArrayList<>();
     for (Element element : elements) {
@@ -67,7 +67,15 @@ class JSoupHelper {
   }
 
   private List<ViewModel> getNogViewModelList() throws IOException {
-    Document document = Jsoup.connect(Constant.NOG_URL + "/?p=1").get();
+    List<ViewModel> viewModelList = new ArrayList<>();
+    for (int i = 1; i <= 6; i++) {
+      viewModelList.addAll(getNogViewModelList(i));
+    }
+    return viewModelList;
+  }
+
+  private List<ViewModel> getNogViewModelList(int page) throws IOException {
+    Document document = Jsoup.connect(Constant.NOG_URL + "/?p=" + page).get();
     Elements headElements = document.select(".heading");
     Elements bodyElements = document.getElementsByClass("entrybody");
     Elements bottomElements = document.getElementsByClass("entrybottom");
