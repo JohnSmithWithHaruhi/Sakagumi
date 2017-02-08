@@ -27,7 +27,6 @@ public class MainActivityView extends AppCompatActivity {
               case R.id.action_blog:
               case R.id.action_rss:
               case R.id.action_event:
-              case R.id.action_member:
               case R.id.action_favorite:
                 break;
             }
