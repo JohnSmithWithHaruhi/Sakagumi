@@ -10,17 +10,24 @@
       tools:context="johnsmithwithharuhi.co.sakagumi.Blog.BlogMainFragment"
       >
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/blog_main_tab_layout"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/blog_main_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:background="@android:color/background_light"
+        >
+      <android.support.design.widget.TabLayout
+          android:id="@+id/blog_main_tab_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          />
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/blog_main_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/blog_main_tab_layout"
+        android:layout_below="@+id/blog_main_app_bar"
         />
 
   </RelativeLayout>
