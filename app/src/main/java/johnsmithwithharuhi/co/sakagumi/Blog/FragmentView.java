@@ -1,6 +1,7 @@
 package johnsmithwithharuhi.co.sakagumi.Blog;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -127,6 +128,8 @@ public class FragmentView extends Fragment
         .setToolbarColor(ContextCompat.getColor(getContext(), mColorId))
         .enableUrlBarHiding()
         .addDefaultShareMenuItem()
+        .setCloseButtonIcon(
+            BitmapFactory.decodeResource(getResources(), R.drawable.ic_arrow_back_24_w))
         .setStartAnimations(getContext(), android.R.anim.slide_in_left,
             android.R.anim.slide_out_right)
         .setExitAnimations(getContext(), android.R.anim.slide_in_left,
