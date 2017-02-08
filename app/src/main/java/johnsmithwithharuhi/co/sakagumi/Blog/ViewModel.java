@@ -4,6 +4,7 @@ import android.databinding.ObservableField;
 import android.view.View;
 
 public class ViewModel {
+  public ObservableField<Integer> type = new ObservableField<>();
   public ObservableField<String> title = new ObservableField<>();
   public ObservableField<String> name = new ObservableField<>();
   public ObservableField<String> time = new ObservableField<>();

@@ -30,14 +30,15 @@ class JSoupHelper {
 
   private List<ViewModel> getOsuViewModelList() throws IOException {
     Document document = Jsoup.connect(
-        Constant.K_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member&ct=11").get();
+        Constant.KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member&ct=11").get();
     Elements elements = document.getElementsByTag("article");
     List<ViewModel> viewModelList = new ArrayList<>();
     for (Element element : elements) {
       ViewModel viewModel = new ViewModel();
+      viewModel.type.set(2);
       viewModel.name.set(element.getElementsByClass("name").text());
       viewModel.title.set(element.getElementsByTag("a").first().text());
-      viewModel.url.set(Constant.K_URL + element.getElementsByTag("a").first().attr("href"));
+      viewModel.url.set(Constant.KEY_URL + element.getElementsByTag("a").first().attr("href"));
       viewModel.content.set(element.getElementsByClass("box-article").text());
       viewModel.time.set(
           element.getElementsByClass(("box-bottom")).first().getElementsByTag("li").first().text());
@@ -47,16 +48,16 @@ class JSoupHelper {
   }
 
   private List<ViewModel> getKeyViewModelList() throws IOException {
-    Document document =
-        Jsoup.connect(Constant.K_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member")
-            .get();
+    Document document = Jsoup.connect(
+        Constant.KEY_URL + "/s/k46o/diary/member/list?ima=0000&page=0&rw=20&cd=member").get();
     Elements elements = document.getElementsByTag("article");
     List<ViewModel> viewModelList = new ArrayList<>();
     for (Element element : elements) {
       ViewModel viewModel = new ViewModel();
+      viewModel.type.set(2);
       viewModel.name.set(element.getElementsByClass("name").text());
       viewModel.title.set(element.getElementsByTag("a").first().text());
-      viewModel.url.set(Constant.K_URL + element.getElementsByTag("a").first().attr("href"));
+      viewModel.url.set(Constant.KEY_URL + element.getElementsByTag("a").first().attr("href"));
       viewModel.content.set(element.getElementsByClass("box-article").text());
       viewModel.time.set(
           element.getElementsByClass(("box-bottom")).first().getElementsByTag("li").first().text());
@@ -66,7 +67,7 @@ class JSoupHelper {
   }
 
   private List<ViewModel> getNogViewModelList() throws IOException {
-    Document document = Jsoup.connect(Constant.N_URL + "/?p=1").get();
+    Document document = Jsoup.connect(Constant.NOG_URL + "/?p=1").get();
     Elements headElements = document.select(".heading");
     Elements bodyElements = document.getElementsByClass("entrybody");
     Elements bottomElements = document.getElementsByClass("entrybottom");
@@ -74,6 +75,7 @@ class JSoupHelper {
     for (int i = 0; i < headElements.size(); i++) {
       Element headElement = headElements.get(i);
       ViewModel viewModel = new ViewModel();
+      viewModel.type.set(1);
       viewModel.name.set(headElement.getElementsByClass("author").text());
       viewModel.title.set(headElement.getElementsByTag("a").first().text());
       viewModel.url.set(headElement.getElementsByTag("a").first().attr("href"));
