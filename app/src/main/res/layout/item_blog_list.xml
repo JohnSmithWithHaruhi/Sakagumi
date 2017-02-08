@@ -27,7 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@{viewModel.name}"
-        android:textColor="@color/colorLightGreen700"
         android:textSize="@dimen/primary_text"
         />
 

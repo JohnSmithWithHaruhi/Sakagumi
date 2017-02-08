@@ -52,7 +52,7 @@ public class FragmentView extends Fragment
     super.onCreate(savedInstanceState);
     mJSoupHelper = new JSoupHelper();
     mCompositeDisposable = new CompositeDisposable();
-    mListAdapter = new ListAdapter(this);
+    mListAdapter = new ListAdapter(getContext(), this);
   }
 
   @Nullable @Override

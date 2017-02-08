@@ -1,6 +1,8 @@
 package johnsmithwithharuhi.co.sakagumi.Blog;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +14,12 @@ import johnsmithwithharuhi.co.sakagumi.databinding.ItemBlogListBinding;
 
 class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
+  private Context mContext;
   private List<ViewModel> mViewModelList = new ArrayList<>();
   private ViewModel.OnItemClickListener mListener;
 
-  ListAdapter(ViewModel.OnItemClickListener listener) {
+  ListAdapter(Context context, ViewModel.OnItemClickListener listener) {
+    mContext = context;
     mListener = listener;
   }
 
@@ -51,6 +55,8 @@ class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     ViewModel viewModel = mViewModelList.get(position);
     viewModel.setOnItemClickListener(mListener);
     binding.setViewModel(viewModel);
+    binding.name.setTextColor(ContextCompat.getColor(mContext,
+        viewModel.type.get() == 1 ? R.color.colorPurple700 : R.color.colorLightGreen700));
   }
 
   @Override public int getItemCount() {
