@@ -27,7 +27,7 @@ import johnsmithwithharuhi.co.sakagumi.R;
 import johnsmithwithharuhi.co.sakagumi.Utils.BitmapUtil;
 import johnsmithwithharuhi.co.sakagumi.databinding.FragmentBlogBinding;
 
-public class FragmentView extends Fragment
+public class BlogPageFragment extends Fragment
     implements ViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
   private static final String BLOG_TYPE_KEY = "blog_type_key";
@@ -41,10 +41,10 @@ public class FragmentView extends Fragment
   private int mType = -1;
   private int mColorId = 0;
 
-  public static FragmentView newInstance(int blogId) {
+  public static BlogPageFragment newInstance(int blogId) {
     Bundle args = new Bundle();
     args.putInt(BLOG_TYPE_KEY, blogId);
-    FragmentView fragment = new FragmentView();
+    BlogPageFragment fragment = new BlogPageFragment();
     fragment.setArguments(args);
     return fragment;
   }

@@ -40,7 +40,7 @@ public class BlogMainFragment extends Fragment {
       }
 
       @Override public Fragment getItem(int position) {
-        return FragmentView.newInstance(position);
+        return BlogPageFragment.newInstance(position);
       }
 
       @Override public int getCount() {
