@@ -1,7 +1,6 @@
 package johnsmithwithharuhi.co.sakagumi.Blog;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,6 +24,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import java.util.List;
 import johnsmithwithharuhi.co.sakagumi.R;
+import johnsmithwithharuhi.co.sakagumi.Utils.BitmapUtil;
 import johnsmithwithharuhi.co.sakagumi.databinding.FragmentBlogBinding;
 
 public class FragmentView extends Fragment
@@ -129,7 +129,7 @@ public class FragmentView extends Fragment
         .enableUrlBarHiding()
         .addDefaultShareMenuItem()
         .setCloseButtonIcon(
-            BitmapFactory.decodeResource(getResources(), R.drawable.ic_arrow_back_24_w))
+            BitmapUtil.convertBitmapFromVectorDrawable(getContext(), R.drawable.ic_arrow_back_w))
         .setStartAnimations(getContext(), android.R.anim.slide_in_left,
             android.R.anim.slide_out_right)
         .setExitAnimations(getContext(), android.R.anim.slide_in_left,

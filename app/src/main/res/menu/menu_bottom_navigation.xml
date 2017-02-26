@@ -3,14 +3,14 @@
     >
   <item
       android:id="@+id/action_blog"
-      android:icon="@drawable/ic_assignment_ind_24_b"
+      android:icon="@drawable/ic_assignment_ind_b"
       android:title="Blog"/>
   <item
       android:id="@+id/action_rss"
-      android:icon="@drawable/ic_rss_feed_24_b"
+      android:icon="@drawable/ic_rss_feed_b"
       android:title="Rss"/>
   <item
       android:id="@+id/action_event"
-      android:icon="@drawable/ic_event_24_b"
+      android:icon="@drawable/ic_event_b"
       android:title="Event"/>
 </menu>
