@@ -1,9 +1,9 @@
-package johnsmithwithharuhi.co.sakagumi.Blog;
+package johnsmithwithharuhi.co.sakagumi.Presentation.ViewModel.Item;
 
 import android.databinding.ObservableField;
 import android.view.View;
 
-public class ViewModel {
+public class ItemBlogListViewModel {
   public ObservableField<Integer> type = new ObservableField<>();
   public ObservableField<String> title = new ObservableField<>();
   public ObservableField<String> name = new ObservableField<>();

@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.sakagumi.Blog;
+package johnsmithwithharuhi.co.sakagumi.Presentation.Presenter;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

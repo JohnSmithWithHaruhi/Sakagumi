@@ -1,4 +1,4 @@
-package johnsmithwithharuhi.co.sakagumi.Blog;
+package johnsmithwithharuhi.co.sakagumi.Presentation.Presenter;
 
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -16,25 +16,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import java.util.List;
+import johnsmithwithharuhi.co.sakagumi.Domain.UseCase.BlogUseCase;
+import johnsmithwithharuhi.co.sakagumi.Domain.Utils.BitmapUtil;
+import johnsmithwithharuhi.co.sakagumi.Presentation.Adapter.BlogListAdapter;
+import johnsmithwithharuhi.co.sakagumi.Presentation.ViewModel.Item.ItemBlogListViewModel;
 import johnsmithwithharuhi.co.sakagumi.R;
-import johnsmithwithharuhi.co.sakagumi.Utils.BitmapUtil;
 import johnsmithwithharuhi.co.sakagumi.databinding.FragmentBlogBinding;
 
 public class BlogPageFragment extends Fragment
-    implements ViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+    implements ItemBlogListViewModel.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
   private static final String BLOG_TYPE_KEY = "blog_type_key";
 
-  private JSoupHelper mJSoupHelper;
+  private FragmentBlogBinding mBinding;
   private CompositeDisposable mCompositeDisposable;
-  private ListAdapter mListAdapter;
+  private BlogListAdapter mBlogListAdapter;
+  private BlogUseCase mBlogUseCase;
 
   private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -51,28 +52,24 @@ public class BlogPageFragment extends Fragment
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mJSoupHelper = new JSoupHelper();
     mCompositeDisposable = new CompositeDisposable();
-    mListAdapter = new ListAdapter(getContext(), this);
+    mBlogUseCase = new BlogUseCase();
+    mBlogListAdapter = new BlogListAdapter(getContext(), this);
   }
 
   @Nullable @Override
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    FragmentBlogBinding binding =
-        DataBindingUtil.inflate(inflater, R.layout.fragment_blog, container, false);
+    mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_blog, container, false);
 
-    mSwipeRefreshLayout = binding.blogSwipeRefreshLayout;
-    mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
-        R.color.colorLightGreen500);
-    mSwipeRefreshLayout.setOnRefreshListener(this);
+    initSwipeRefreshLayout();
 
-    RecyclerView recyclerView = binding.blogRecyclerView;
+    RecyclerView recyclerView = mBinding.blogRecyclerView;
     recyclerView.setHasFixedSize(true);
     recyclerView.addItemDecoration(
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    recyclerView.setAdapter(mListAdapter);
+    recyclerView.setAdapter(mBlogListAdapter);
     mType = getArguments().getInt(BLOG_TYPE_KEY);
     switch (mType) {
       case 0:
@@ -86,11 +83,11 @@ public class BlogPageFragment extends Fragment
         break;
     }
 
-    if (mListAdapter.getItemCount() == 0) {
+    if (mBlogListAdapter.getItemCount() == 0) {
       mSwipeRefreshLayout.setRefreshing(true);
       loadBlogList();
     }
-    return binding.getRoot();
+    return mBinding.getRoot();
   }
 
   @Override public void onDestroy() {
@@ -98,27 +95,37 @@ public class BlogPageFragment extends Fragment
     super.onDestroy();
   }
 
+  private void initSwipeRefreshLayout() {
+    mSwipeRefreshLayout = mBinding.blogSwipeRefreshLayout;
+    mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
+        R.color.colorLightGreen500);
+    mSwipeRefreshLayout.setOnRefreshListener(this);
+  }
+
   private void loadBlogList() {
-    mCompositeDisposable.add(Observable.create(new ObservableOnSubscribe<List<ViewModel>>() {
-      @Override public void subscribe(ObservableEmitter<List<ViewModel>> e) throws Exception {
-        e.onNext(mJSoupHelper.getViewModelList(mType));
-        e.onComplete();
-      }
-    }).subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Consumer<List<ViewModel>>() {
-          @Override public void accept(List<ViewModel> viewModels) throws Exception {
-            mListAdapter.putViewModelList(viewModels);
-            if (mSwipeRefreshLayout.isRefreshing()) {
-              mSwipeRefreshLayout.setRefreshing(false);
-            }
+    Observable<List<ItemBlogListViewModel>> observable;
+    switch (mType) {
+      case 0:
+        observable = mBlogUseCase.getOsuViewModelList();
+        break;
+      case 1:
+        observable = mBlogUseCase.getNogViewModelList();
+        break;
+      case 2:
+      default:
+        observable = mBlogUseCase.getKeyViewModelList();
+        break;
+    }
+    mCompositeDisposable.add(observable.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread()).subscribe(viewModels -> {
+          mBlogListAdapter.putViewModelList(viewModels);
+          if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
           }
-        }, new Consumer<Throwable>() {
-          @Override public void accept(Throwable throwable) throws Exception {
-            Log.d("TAG", "Throwable: " + throwable.getMessage());
-            if (mSwipeRefreshLayout.isRefreshing()) {
-              mSwipeRefreshLayout.setRefreshing(false);
-            }
+        }, throwable -> {
+          Log.d("TAG", "Throwable: " + throwable.getMessage());
+          if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
           }
         }));
   }

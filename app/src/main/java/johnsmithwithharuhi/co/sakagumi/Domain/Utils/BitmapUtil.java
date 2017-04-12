@@ -1,14 +1,10 @@
-package johnsmithwithharuhi.co.sakagumi.Utils;
+package johnsmithwithharuhi.co.sakagumi.Domain.Utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.VectorDrawable;
 import android.support.v4.content.ContextCompat;
-
-/**
- * Bitmap專用Utility
- */
 
 public class BitmapUtil {
 
