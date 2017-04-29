@@ -35,8 +35,7 @@ public class BlogListAdapter extends RecyclerView.Adapter<BlogListAdapter.ViewHo
     ItemBlogListViewModel viewModel = mViewModelList.get(position);
     viewModel.setOnItemClickListener(mListener);
     binding.setViewModel(viewModel);
-    binding.name.setTextColor(ContextCompat.getColor(mContext,
-        viewModel.type.get() == 1 ? R.color.colorPurple700 : R.color.colorLightGreen700));
+    binding.name.setTextColor(ContextCompat.getColor(mContext, viewModel.textColor));
   }
 
   @Override public int getItemCount() {

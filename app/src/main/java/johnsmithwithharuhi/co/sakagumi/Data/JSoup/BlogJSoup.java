@@ -14,10 +14,6 @@ public class BlogJSoup {
   private static final String NOG_URL = "http://blog.nogizaka46.com";
   private static final String KEY_URL = "http://www.keyakizaka46.com";
 
-  private static final int OSU_KEY = 0;
-  private static final int NOG_KEY = 1;
-  private static final int KEY_KEY = 2;
-
   public List<BlogEntity> createOsuBlogList() throws IOException {
     List<BlogEntity> blogEntities = new ArrayList<>();
     Document document =
@@ -26,7 +22,7 @@ public class BlogJSoup {
     Elements elements = document.getElementsByTag("article");
     for (Element element : elements) {
       BlogEntity blogEntity = new BlogEntity();
-      blogEntity.setType(OSU_KEY);
+      blogEntity.setType(BlogEntity.OSU_KEY);
       blogEntity.setName(element.getElementsByClass("name").text());
       blogEntity.setTitle(element.getElementsByTag("a").first().text());
       blogEntity.setUrl(KEY_URL + element.getElementsByTag("a").first().attr("href"));
@@ -45,7 +41,7 @@ public class BlogJSoup {
     Elements elements = document.getElementsByTag("article");
     for (Element element : elements) {
       BlogEntity blogEntity = new BlogEntity();
-      blogEntity.setType(KEY_KEY);
+      blogEntity.setType(BlogEntity.KEY_KEY);
       blogEntity.setName(element.getElementsByClass("name").text());
       blogEntity.setTitle(element.getElementsByTag("a").first().text());
       blogEntity.setUrl(KEY_URL + element.getElementsByTag("a").first().attr("href"));
@@ -74,7 +70,7 @@ public class BlogJSoup {
     for (int i = 0; i < headElements.size(); i++) {
       Element headElement = headElements.get(i);
       BlogEntity blogEntity = new BlogEntity();
-      blogEntity.setType(NOG_KEY);
+      blogEntity.setType(BlogEntity.NOG_KEY);
       blogEntity.setName(headElement.getElementsByClass("author").text());
       blogEntity.setTitle(headElement.getElementsByTag("a").first().text());
       blogEntity.setUrl(headElement.getElementsByTag("a").first().attr("href"));

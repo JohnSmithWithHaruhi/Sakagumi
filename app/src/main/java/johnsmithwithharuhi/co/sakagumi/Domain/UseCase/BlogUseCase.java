@@ -5,6 +5,7 @@ import java.util.List;
 import johnsmithwithharuhi.co.sakagumi.Data.Entity.BlogEntity;
 import johnsmithwithharuhi.co.sakagumi.Data.Repository.BlogRepository;
 import johnsmithwithharuhi.co.sakagumi.Presentation.ViewModel.Item.ItemBlogListViewModel;
+import johnsmithwithharuhi.co.sakagumi.R;
 
 public class BlogUseCase {
 
@@ -40,12 +41,13 @@ public class BlogUseCase {
 
   private ItemBlogListViewModel convertEntityToViewModel(BlogEntity blogEntity) {
     ItemBlogListViewModel viewModel = new ItemBlogListViewModel();
-    viewModel.type.set(blogEntity.getType());
     viewModel.title.set(blogEntity.getTitle());
     viewModel.name.set(blogEntity.getName());
     viewModel.content.set(blogEntity.getContent());
     viewModel.url.set(blogEntity.getUrl());
     viewModel.time.set(blogEntity.getTime());
+    viewModel.textColor = blogEntity.getType() == BlogEntity.NOG_KEY ? R.color.colorPurple700
+        : R.color.colorLightGreen700;
     return viewModel;
   }
 }

@@ -2,6 +2,10 @@ package johnsmithwithharuhi.co.sakagumi.Data.Entity;
 
 public class BlogEntity {
 
+  public static final int OSU_KEY = 0;
+  public static final int NOG_KEY = 1;
+  public static final int KEY_KEY = 2;
+
   private int type;
   private String name;
   private String title;
