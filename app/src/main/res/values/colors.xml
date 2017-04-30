@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#9E9E9E</color>
-  <color name="colorPrimaryDark">#616161</color>
-  <color name="colorAccent">#8BC34A</color>
+  <color name="colorPrimary">#212121</color>
+  <color name="colorPrimaryDark">#9E9E9E</color>
+  <color name="colorAccent">#212121</color>
 
   <!--Green-->
   <color name="colorLightGreen500">#8BC34A</color>
   <color name="colorLightGreen700">#689F38</color>
 
+  <!--Purple-->
+  <color name="colorPurple700">#7B1FA2</color>
+
   <!--Grey-->
   <color name="colorGrey300">#E0E0E0</color>
   <color name="colorGrey500">#9E9E9E</color>
   <color name="colorGrey700">#616161</color>
+  <color name="colorGrey900">#212121</color>
 </resources>
