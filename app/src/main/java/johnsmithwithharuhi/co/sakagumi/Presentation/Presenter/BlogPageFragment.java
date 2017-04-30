@@ -58,16 +58,10 @@ public class BlogPageFragment extends Fragment
   public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
     mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_blog, container, false);
+    mType = covertPagePositionToType(getArguments().getInt(PAGE_POSITION));
 
     initSwipeRefreshLayout();
-
-    RecyclerView recyclerView = mBinding.blogRecyclerView;
-    recyclerView.setHasFixedSize(true);
-    recyclerView.addItemDecoration(
-        new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    recyclerView.setAdapter(mBlogListAdapter);
-    mType = covertPagePositionToType(getArguments().getInt(PAGE_POSITION));
+    initRecyclerView();
 
     if (mBlogListAdapter.getItemCount() == 0) {
       mSwipeRefreshLayout.setRefreshing(true);
@@ -86,6 +80,15 @@ public class BlogPageFragment extends Fragment
     mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_purple,
         R.color.colorLightGreen500);
     mSwipeRefreshLayout.setOnRefreshListener(this);
+  }
+
+  private void initRecyclerView() {
+    RecyclerView recyclerView = mBinding.blogRecyclerView;
+    recyclerView.setHasFixedSize(true);
+    recyclerView.addItemDecoration(
+        new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    recyclerView.setAdapter(mBlogListAdapter);
   }
 
   private void initBlogList() {
