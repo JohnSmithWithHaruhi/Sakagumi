@@ -24,6 +24,20 @@ public class BlogListAdapter extends RecyclerView.Adapter<BlogListAdapter.ViewHo
     mListener = listener;
   }
 
+  public void initViewModelList(List<ItemBlogListViewModel> viewModelList) {
+    mViewModelList = viewModelList;
+    notifyDataSetChanged();
+  }
+
+  public void putViewModelList(List<ItemBlogListViewModel> viewModelList) {
+    mViewModelList.addAll(0, viewModelList);
+    notifyItemRangeInserted(0, viewModelList.size());
+  }
+
+  public String getNewestUrl() {
+    return mViewModelList.get(0).url.get();
+  }
+
   @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View view =
         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blog_list, parent, false);
@@ -40,27 +54,6 @@ public class BlogListAdapter extends RecyclerView.Adapter<BlogListAdapter.ViewHo
 
   @Override public int getItemCount() {
     return mViewModelList.size();
-  }
-
-  public void putViewModelList(List<ItemBlogListViewModel> viewModelList) {
-    if (!mViewModelList.isEmpty()) {
-      String firstUrl = mViewModelList.get(0).url.get();
-      List<ItemBlogListViewModel> tempViewModelList = new ArrayList<>();
-      for (ItemBlogListViewModel viewModel : viewModelList) {
-        if (firstUrl.equals(viewModel.url.get())) {
-          break;
-        } else {
-          tempViewModelList.add(viewModel);
-        }
-      }
-      if (!tempViewModelList.isEmpty()) {
-        mViewModelList.addAll(0, tempViewModelList);
-        notifyItemRangeInserted(0, tempViewModelList.size());
-      }
-    } else {
-      mViewModelList.addAll(viewModelList);
-      notifyDataSetChanged();
-    }
   }
 
   class ViewHolder extends RecyclerView.ViewHolder {

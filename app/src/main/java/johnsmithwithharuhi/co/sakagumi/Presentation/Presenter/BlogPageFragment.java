@@ -85,7 +85,7 @@ public class BlogPageFragment extends Fragment
 
     if (mBlogListAdapter.getItemCount() == 0) {
       mSwipeRefreshLayout.setRefreshing(true);
-      loadBlogList();
+      initBlogList();
     }
     return mBinding.getRoot();
   }
@@ -102,7 +102,7 @@ public class BlogPageFragment extends Fragment
     mSwipeRefreshLayout.setOnRefreshListener(this);
   }
 
-  private void loadBlogList() {
+  private void initBlogList() {
     Observable<List<ItemBlogListViewModel>> observable;
     switch (mType) {
       case 0:
@@ -117,7 +117,37 @@ public class BlogPageFragment extends Fragment
         break;
     }
     mCompositeDisposable.add(observable.subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread()).subscribe(viewModels -> {
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(viewModels -> {
+          mBlogListAdapter.initViewModelList(viewModels);
+          if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+          }
+        }, throwable -> {
+          Log.d("TAG", "Throwable: " + throwable.getMessage());
+          if (mSwipeRefreshLayout.isRefreshing()) {
+            mSwipeRefreshLayout.setRefreshing(false);
+          }
+        }));
+  }
+
+  private void loadNewBlogList() {
+    Observable<List<ItemBlogListViewModel>> observable;
+    switch (mType) {
+      case 0:
+        observable = mBlogUseCase.getNewOsuViewModelList(mBlogListAdapter.getNewestUrl());
+        break;
+      case 1:
+        observable = mBlogUseCase.getNogViewModelList();
+        break;
+      case 2:
+      default:
+        observable = mBlogUseCase.getKeyViewModelList();
+        break;
+    }
+    mCompositeDisposable.add(observable.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(viewModels -> {
           mBlogListAdapter.putViewModelList(viewModels);
           if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
@@ -147,6 +177,12 @@ public class BlogPageFragment extends Fragment
 
   @Override public void onRefresh() {
     mCompositeDisposable.clear();
-    loadBlogList();
+    if (mBlogListAdapter.getItemCount() == 0) {
+      mSwipeRefreshLayout.setRefreshing(true);
+      initBlogList();
+    } else {
+      mSwipeRefreshLayout.setRefreshing(true);
+      loadNewBlogList();
+    }
   }
 }

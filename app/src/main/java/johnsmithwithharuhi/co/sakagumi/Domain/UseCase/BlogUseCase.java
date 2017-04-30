@@ -1,6 +1,8 @@
 package johnsmithwithharuhi.co.sakagumi.Domain.UseCase;
 
+import android.text.TextUtils;
 import io.reactivex.Observable;
+import java.util.ArrayList;
 import java.util.List;
 import johnsmithwithharuhi.co.sakagumi.Data.Entity.BlogEntity;
 import johnsmithwithharuhi.co.sakagumi.Data.Repository.BlogRepository;
@@ -39,6 +41,15 @@ public class BlogUseCase {
         .toObservable();
   }
 
+  public Observable<List<ItemBlogListViewModel>> getNewOsuViewModelList(String newestUrl) {
+    return mRepository.getOsuBlog()
+        .flatMap(blogEntities -> Observable.fromIterable(blogEntities)
+            .map(this::convertEntityToViewModel))
+        .toList()
+        .map(viewModels -> filterOlder(viewModels, newestUrl))
+        .toObservable();
+  }
+
   private ItemBlogListViewModel convertEntityToViewModel(BlogEntity blogEntity) {
     ItemBlogListViewModel viewModel = new ItemBlogListViewModel();
     viewModel.title.set(blogEntity.getTitle());
@@ -49,5 +60,18 @@ public class BlogUseCase {
     viewModel.textColor = blogEntity.getType() == BlogEntity.NOG_KEY ? R.color.colorPurple700
         : R.color.colorLightGreen700;
     return viewModel;
+  }
+
+  private List<ItemBlogListViewModel> filterOlder(List<ItemBlogListViewModel> itemList,
+      String newestUrl) {
+    List<ItemBlogListViewModel> tempList = new ArrayList<>();
+    for (ItemBlogListViewModel item : itemList) {
+      if (!TextUtils.equals(item.url.get(), newestUrl)) {
+        tempList.add(item);
+      } else {
+        break;
+      }
+    }
+    return tempList;
   }
 }
